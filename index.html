@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mapa Interativo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="toolbar">
+    <button id="openProject" data-tooltip="Ctrl+O">📂 Abrir Projeto</button>
+    <button id="saveProject" data-tooltip="Ctrl+S">💾 Salvar Projeto</button>
+    <button id="newProject">🆕 Novo Projeto</button>
+    <button id="openImage" data-tooltip="Ctrl+I">🖼️ Abrir Imagem</button>
+    <button id="exportPNG" data-tooltip="Ctrl+E">📤 Exportar Imagem</button>
+
+    <!-- Menu Marcadores (Forma + Borda) -->
+    <div style="position:relative;">
+      <button id="markerMenuBtn" class="small" data-tooltip="M">📍 Marcadores ▾</button>
+      <div id="markerMenu" class="popup-menu hidden" style="left:0;">
+        <div class="popup-title">Marcadores</div>
+
+        <div class="popup-section-title">Forma</div>
+        <div class="shape-row">
+<button class="shape-option" data-shape-option="circle">
+<span class="shape-icon">⚪</span>
+</button>
+<button class="shape-option" data-shape-option="square">
+<span class="shape-icon">⬜</span>
+</button>
+<button class="shape-option" data-shape-option="triangle">
+<span class="shape-icon">▲</span>
+</button>
+<button class="shape-option" data-shape-option="cross">
+<span class="shape-icon">✚</span>
+</button>
+<button class="shape-option" data-shape-option="question">
+<span class="shape-icon">?</span>
+</button>
+</div>
+<div class="shape-row">
+<button class="shape-option" data-shape-option="diamond">
+<span class="shape-icon">◆</span>
+</button>
+<button class="shape-option" data-shape-option="hexagon">
+<span class="shape-icon">⬟</span>
+</button>
+<button class="shape-option" data-shape-option="star">
+<span class="shape-icon">★</span>
+</button>
+<button class="shape-option" data-shape-option="pentagon">
+<span class="shape-icon">⬘</span>
+</button>
+<button class="shape-option" data-shape-option="heptagon">
+<span class="shape-icon">⬣</span>
+</button>
+</div>
+<div class="popup-field">
+<label>Tamanho:
+            <input id="size" max="200" min="2" style="width:70px" type="number" value="10"/>
+</label>
+</div>
+<div class="popup-field">
+<label>Opacidade:
+            <input id="opacity" max="1" min="0.1" step="0.05" type="range" value="1"/>
+</label>
+</div>
+<div class="popup-field">
+<label>Cor de preenchimento:
+            <input id="color" type="color" value="#ff0000"/>
+</label>
+</div>
+<div class="popup-field">
+<label>Preenchimento:
+            <select id="fillType" style="width:140px">
+<option value="solid">Cor sólida</option>
+<option value="none">Sem preenchimento</option>
+</select>
+</label>
+</div>
+<input id="shape" type="hidden" value="circle"/>
+
+        <div class="popup-divider"></div>
+        <div class="popup-section-title">Borda</div>
+        <div class="popup-field">
+<label>Cor:
+            <input id="borderColor" type="color" value="#222222"/>
+</label>
+</div>
+<div class="popup-field">
+<label>Espessura:
+            <input id="borderWidth" max="20" min="0" style="width:70px" type="number" value="2"/>
+</label>
+</div>
+<div class="popup-field">
+<label>
+<input id="borderNone" type="checkbox"/> Sem borda
+          </label>
+</div>
+      </div>
+    </div>
+
+    <!-- Presets / Hotkeys -->
+    <div class="preset-bar">
+      <span style="font-size:12px;opacity:0.8;">Presets:</span>
+
+      <div class="preset-slot" data-slot="0">
+        <button class="preset-btn" id="preset0Btn">
+          <canvas id="preset0Canvas" width="40" height="32"></canvas>
+        </button>
+        <div class="preset-side">
+          <button class="preset-add" id="preset0Save">+</button>
+          <button class="preset-reset" id="preset0Clear">−</button>
+        </div>
+      </div>
+
+      <div class="preset-slot" data-slot="1">
+        <button class="preset-btn" id="preset1Btn">
+          <canvas id="preset1Canvas" width="40" height="32"></canvas>
+        </button>
+        <div class="preset-side">
+          <button class="preset-add" id="preset1Save">+</button>
+          <button class="preset-reset" id="preset1Clear">−</button>
+        </div>
+      </div>
+
+      <div class="preset-slot" data-slot="2">
+        <button class="preset-btn" id="preset2Btn">
+          <canvas id="preset2Canvas" width="40" height="32"></canvas>
+        </button>
+        <div class="preset-side">
+          <button class="preset-add" id="preset2Save">+</button>
+          <button class="preset-reset" id="preset2Clear">−</button>
+        </div>
+      </div>
+
+      <div class="preset-slot" data-slot="3">
+        <button class="preset-btn" id="preset3Btn">
+          <canvas id="preset3Canvas" width="40" height="32"></canvas>
+        </button>
+        <div class="preset-side">
+          <button class="preset-add" id="preset3Save">+</button>
+          <button class="preset-reset" id="preset3Clear">−</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-left:auto; position:relative;">
+      <button id="shortcutsBtn" class="small">🆘 Ajuda</button>
+
+      <div id="shortcutsBox" class="popup-menu hidden" style="right:0;">
+        <div class="popup-title">Atalhos</div>
+        <div class="popup-field"><b>Botão esquerdo</b> — Criar marcador</div>
+        <div class="popup-field"><b>Botão direito</b> — Remover marcador</div>
+        <div class="popup-field"><b>Arrastar esquerdo</b> — Mover imagem (pan)</div>
+        <div class="popup-field"><b>Botão do meio sobre marcador</b> — Mover marcador</div>
+        <div class="popup-field"><b>Scroll do mouse</b> — Zoom</div>
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,0.1);margin:6px 0" />
+        <div class="popup-field"><b>Ctrl + O</b> — Abrir projeto</div>
+        <div class="popup-field"><b>Ctrl + I</b> — Abrir imagem</div>
+        <div class="popup-field"><b>Ctrl + S</b> — Salvar projeto</div>
+        <div class="popup-field"><b>Ctrl + Shift + S</b> — Salvar como</div>
+        <div class="popup-field"><b>Ctrl + E</b> — Exportar PNG</div>
+        <div class="popup-field"><b>Ctrl + Z</b> — Desfazer</div>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileImage" accept="image/*" hidden />
+  <input type="file" id="fileProject" accept="application/json" hidden />
+
+  <canvas id="canvas"></canvas>
+
+  <!-- Modal de confirmação de saída -->
+  <div id="exitModal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <div class="modal-title">Sair do aplicativo</div>
+      <div class="modal-text">Deseja salvar o projeto antes de sair?</div>
+      <div class="modal-actions">
+        <button id="exitSaveBtn">💾 Salvar e sair</button>
+        <button id="exitWithoutSaveBtn">⏏️ Sair sem salvar</button>
+        <button id="exitCancelBtn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+    <script src="renderer.js"></script>
+  <script>
+    const markerMenuBtn = document.getElementById("markerMenuBtn");
+    const markerMenu = document.getElementById("markerMenu");
+    const shortcutsBtn = document.getElementById("shortcutsBtn");
+    const shortcutsBox = document.getElementById("shortcutsBox");
+
+    function closeAllMenus() {
+      if (markerMenu) markerMenu.classList.add("hidden");
+      if (shortcutsBox) shortcutsBox.classList.add("hidden");
+    }
+
+    function toggleMenu(menu) {
+      if (!menu) return;
+      const willShow = menu.classList.contains("hidden");
+      closeAllMenus();
+      if (willShow) {
+        menu.classList.remove("hidden");
+      }
+    }
+
+    markerMenuBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMenu(markerMenu);
+    });
+
+    shortcutsBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMenu(shortcutsBox);
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+      if (
+        markerMenuBtn && markerMenu &&
+        !markerMenuBtn.contains(t) && !markerMenu.contains(t) &&
+        shortcutsBtn && shortcutsBox &&
+        !shortcutsBtn.contains(t) && !shortcutsBox.contains(t)
+      ) {
+        closeAllMenus();
+      }
+    });
+
+  </script>
+</body>
+</html>

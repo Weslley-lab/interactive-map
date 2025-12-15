@@ -1,0 +1,403 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, Arial, sans-serif;
+  background: #1b1c1d;
+  color: #ffffff;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.toolbar {
+  background: #202124;
+  color: #ffffff;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #2e2f31;
+  box-sizing: border-box;
+}
+
+.toolbar button,
+.toolbar select,
+.toolbar input {
+  background: #2d2f31;
+  color: #ffffff;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toolbar button:hover {
+  background: #3c4043;
+}
+
+.toolbar label {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#canvas {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: block;
+  background: #2b2b2b;
+  cursor: crosshair;
+  image-rendering: optimizeQuality;
+}
+
+.info {
+  font-size: 12px;
+  color: #cfcfcf;
+  padding: 6px 10px;
+  background: #171717;
+  border-top: 1px solid #2e2e2e;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Presets */
+.preset-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+}
+
+.preset-slot {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  background: #151618;
+  border-radius: 8px;
+  padding: 2px 4px;
+  border: 1px solid #333333;
+}
+
+/* Preset selecionado (destaque dourado, como seleção de forma) */
+.preset-slot.selected {
+  border-color: #f1c40f;
+  box-shadow: 0 0 0 1px #f1c40f;
+}
+
+/* Preset vazio: não selecionável (o botão + continua disponível) */
+.preset-slot.empty .preset-btn {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.preset-btn {
+  min-width: 46px;
+  min-height: 38px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  background: #202124;
+  border-radius: 6px;
+  border: 1px solid #444444;
+}
+
+.preset-side {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.preset-add,
+.preset-reset {
+  width: 30px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  border: none;
+  flex: 1;
+}
+
+.preset-add {
+  background: #27ae60;
+  color: #000000;
+}
+
+.preset-add:hover {
+  background: #2ecc71;
+}
+
+.preset-reset {
+  background: #c0392b;
+  color: #000000;
+}
+
+.preset-reset:hover {
+  background: #e74c3c;
+}
+
+/* Ajuda */
+.small {
+  font-size: 13px;
+  padding: 4px 6px;
+}
+
+/* Modal de saída */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #202124;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  max-width: 360px;
+  width: 100%;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.modal-text {
+  font-size: 14px;
+  color: #e0e0e0;
+  margin-bottom: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-actions button {
+  font-size: 13px;
+}
+
+/* Pop-up genérico de menus (forma, borda, ajuda) */
+.popup-menu {
+  position: absolute;
+  top: 110%;
+  background: #1e1f21;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  z-index: 999;
+  min-width: 220px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.popup-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.popup-section-title {
+  font-weight: 700;
+  margin: 10px 0 6px;
+  opacity: 0.95;
+}
+
+.popup-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 10px 0;
+}
+
+.popup-field {
+  margin: 4px 0;
+}
+
+.shape-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.shape-option {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  background: #2d2f31;
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.shape-option.active {
+  border-color: #f1c40f;
+  box-shadow: 0 0 0 1px #f1c40f;
+  background: #35363a;
+}
+
+.shape-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.shape-icon.circle {
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.shape-icon.square {
+  border: 2px solid #ffffff;
+}
+
+.shape-icon.triangle {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+.shape-icon.triangle::before,
+.shape-icon.triangle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.shape-icon.triangle::before {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #ffffff;
+  bottom: 1px;
+}
+.shape-icon.triangle::after {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid #1e1f21;
+  bottom: 3px;
+}
+
+.shape-icon.cross::before,
+.shape-icon.cross::after {
+  content: "";
+  position: absolute;
+  background: #ffffff;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+}
+
+.shape-icon.cross::before {
+  width: 2px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+}
+
+.shape-icon.cross::after {
+  width: 18px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+
+.shape-icon.question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+
+
+
+/* Shape icons using only Unicode symbols */
+.shape-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  width: 18px;
+  height: 18px;
+  border: none;
+  padding: 0;
+  box-sizing: border-box;
+}
+.shape-icon::before,
+.shape-icon::after {
+  content: none !important;
+}
+
+/* Popup menu animation */
+@keyframes popupFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.popup-menu {
+  animation: popupFadeIn 0.18s ease-out;
+}
+
+/* Tooltip (atalhos) */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s ease;
+  z-index: 10000;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* Flash visual ao selecionar preset por teclado */
+.preset-slot.flash {
+  animation: presetFlash 0.35s ease-out;
+}
+@keyframes presetFlash {
+  0% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
+  50% { box-shadow: 0 0 0 3px rgba(241,196,15,0.9); }
+  100% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
+}
