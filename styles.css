@@ -6,6 +6,8 @@ html, body {
   font-family: system-ui, Arial, sans-serif;
   background: #1b1c1d;
   color: #ffffff;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef2f7 100%);
+  color: #1b1c24;
 }
 
 body {
@@ -17,12 +19,19 @@ body {
   background: #202124;
   color: #ffffff;
   padding: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #1b1c24;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
   border-bottom: 1px solid #2e2f31;
+  border-bottom: 1px solid rgba(27, 28, 36, 0.08);
   box-sizing: border-box;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .toolbar button,
@@ -33,12 +42,30 @@ body {
   border: none;
   padding: 6px 8px;
   border-radius: 6px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.5));
+  color: #1b1c24;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 7px 10px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 6px 20px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
 }
 
 .toolbar button:hover {
   background: #3c4043;
+.toolbar button:hover,
+.toolbar select:hover,
+.toolbar input:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 8px 24px rgba(0,0,0,0.12);
+  border-color: rgba(110, 139, 183, 0.4);
+}
+
+.toolbar button:active {
+  transform: translateY(0);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .toolbar label {
@@ -54,16 +81,22 @@ body {
   height: calc(100vh - 60px);
   display: block;
   background: #2b2b2b;
+  background: #f3f6fb;
   cursor: crosshair;
   image-rendering: optimizeQuality;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 .info {
   font-size: 12px;
   color: #cfcfcf;
+  color: #4a5568;
   padding: 6px 10px;
   background: #171717;
   border-top: 1px solid #2e2e2e;
+  background: rgba(255, 255, 255, 0.8);
+  border-top: 1px solid rgba(27, 28, 36, 0.08);
+  backdrop-filter: blur(12px);
 }
 
 .hidden {
@@ -84,14 +117,21 @@ body {
   gap: 4px;
   background: #151618;
   border-radius: 8px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 12px;
   padding: 2px 4px;
   border: 1px solid #333333;
+  border: 1px solid rgba(27, 28, 36, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
 }
 
 /* Preset selecionado (destaque dourado, como seleção de forma) */
 .preset-slot.selected {
   border-color: #f1c40f;
   box-shadow: 0 0 0 1px #f1c40f;
+  border-color: rgba(241, 196, 15, 0.6);
+  box-shadow: 0 0 0 1px rgba(241, 196, 15, 0.8), 0 12px 28px rgba(241, 196, 15, 0.18);
 }
 
 /* Preset vazio: não selecionável (o botão + continua disponível) */
@@ -111,6 +151,10 @@ body {
   background: #202124;
   border-radius: 6px;
   border: 1px solid #444444;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  border: 1px solid rgba(27, 28, 36, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .preset-side {
@@ -130,25 +174,33 @@ body {
   justify-content: center;
   border-radius: 0;
   border: none;
+  border-radius: 8px;
+  border: 1px solid rgba(27, 28, 36, 0.08);
   flex: 1;
 }
 
 .preset-add {
   background: #27ae60;
   color: #000000;
+  background: linear-gradient(145deg, rgba(120, 255, 184, 0.35), rgba(39, 174, 96, 0.35));
+  color: #0f5132;
 }
 
 .preset-add:hover {
   background: #2ecc71;
+  background: linear-gradient(145deg, rgba(120, 255, 184, 0.45), rgba(39, 174, 96, 0.45));
 }
 
 .preset-reset {
   background: #c0392b;
   color: #000000;
+  background: linear-gradient(145deg, rgba(255, 187, 187, 0.45), rgba(192, 57, 43, 0.4));
+  color: #611111;
 }
 
 .preset-reset:hover {
   background: #e74c3c;
+  background: linear-gradient(145deg, rgba(255, 187, 187, 0.55), rgba(192, 57, 43, 0.5));
 }
 
 /* Ajuda */
@@ -162,6 +214,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -171,8 +224,12 @@ body {
 .modal-content {
   background: #202124;
   border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 14px;
   padding: 16px 18px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(16px);
   max-width: 360px;
   width: 100%;
 }
@@ -186,6 +243,7 @@ body {
 .modal-text {
   font-size: 14px;
   color: #e0e0e0;
+  color: #2d3748;
   margin-bottom: 14px;
 }
 
@@ -207,12 +265,17 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 6px 20px rgba(0,0,0,0.6);
   border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(27, 28, 36, 0.08);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.14);
+  border-radius: 12px;
   padding: 10px 12px;
   font-size: 13px;
   z-index: 999;
   min-width: 220px;
   max-height: calc(100vh - 80px);
   overflow-y: auto;
+  backdrop-filter: blur(12px);
 }
 
 .popup-title {
@@ -224,11 +287,13 @@ body {
   font-weight: 700;
   margin: 10px 0 6px;
   opacity: 0.95;
+  opacity: 0.85;
 }
 
 .popup-divider {
   height: 1px;
   background: rgba(255,255,255,0.08);
+  background: rgba(27, 28, 36, 0.1);
   margin: 10px 0;
 }
 
@@ -249,16 +314,22 @@ body {
   border-radius: 6px;
   background: #2d2f31;
   border: 1px solid #555;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(27, 28, 36, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: #1b1c24;
 }
 
 .shape-option.active {
   border-color: #f1c40f;
   box-shadow: 0 0 0 1px #f1c40f;
   background: #35363a;
+  border-color: rgba(241, 196, 15, 0.7);
+  box-shadow: 0 0 0 1px rgba(241, 196, 15, 0.7);
+  background: rgba(255, 249, 224, 0.8);
 }
 
 .shape-icon {
@@ -272,10 +343,12 @@ body {
 .shape-icon.circle {
   border-radius: 50%;
   border: 2px solid #ffffff;
+  border: 2px solid #1b1c24;
 }
 
 .shape-icon.square {
   border: 2px solid #ffffff;
+  border: 2px solid #1b1c24;
 }
 
 .shape-icon.triangle {
@@ -296,6 +369,7 @@ body {
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 14px solid #ffffff;
+  border-bottom: 14px solid #1b1c24;
   bottom: 1px;
 }
 .shape-icon.triangle::after {
@@ -304,6 +378,7 @@ body {
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-bottom: 10px solid #1e1f21;
+  border-bottom: 10px solid rgba(255, 255, 255, 0.9);
   bottom: 3px;
 }
 
@@ -312,6 +387,7 @@ body {
   content: "";
   position: absolute;
   background: #ffffff;
+  background: #1b1c24;
   left: 50%;
   top: 50%;
   transform-origin: center;
@@ -337,6 +413,7 @@ body {
   font-size: 14px;
   font-weight: 700;
   color: #ffffff;
+  color: #1b1c24;
 }
 
 
@@ -381,9 +458,14 @@ body {
   transform: translateX(-50%);
   background: #111;
   color: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1b1c24;
   font-size: 11px;
   padding: 4px 6px;
   border-radius: 4px;
+  border-radius: 6px;
+  border: 1px solid rgba(27, 28, 36, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
