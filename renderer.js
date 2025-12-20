@@ -67,6 +67,30 @@ let markers = []; // {x,y,color,size,shape,fillType,borderColor,borderWidth,opac
 let undoStack = [];
 
 let currentProjectName = null;
+
+let isDirty = false;
+
+function updateWindowTitle() {
+  const baseTitle = "Mapa Interativo";
+  const projectLabel = currentProjectName ? String(currentProjectName).replace(/\.json$/i, "") : "Sem projeto";
+  const dirtyMark = isDirty ? " *" : "";
+  document.title = `${baseTitle} – ${projectLabel}${dirtyMark}`;
+}
+
+function setDirty(v) {
+  const nv = !!v;
+  if (isDirty === nv) return;
+  isDirty = nv;
+  updateWindowTitle();
+}
+
+function setProjectName(nameOrNull) {
+  currentProjectName = nameOrNull || null;
+  updateWindowTitle();
+}
+
+// inicial
+updateWindowTitle();
 let hotSlots = [null, null, null, null];
 
 // Preset selecionado (apenas presets configurados podem ser selecionados)
@@ -313,7 +337,8 @@ fileImage.addEventListener("change", (ev) => {
       offsetY = (canvas.clientHeight - dispH) / 2;
       markers = [];
       undoStack = [];
-      currentProjectName = null;
+      setProjectName(null);
+      setDirty(true);
       draw();
     };
     img.src = imageSrc;
@@ -360,6 +385,9 @@ canvas.addEventListener("pointermove", (ev) => {
     if (!isPanning && dist > 3) {
       isPanning = true;
     }
+  if (dragMode === "pan" && isPanning) {
+    setDirty(true);
+  }
     if (isPanning) {
       offsetX += dx;
       offsetY += dy;
@@ -406,6 +434,7 @@ canvas.addEventListener("pointerup", (ev) => {
           noBorder: borderNoneCheckbox ? borderNoneCheckbox.checked : false
         });
         draw();
+        setDirty(true);
       }
     }
   }
@@ -436,6 +465,7 @@ canvas.addEventListener("contextmenu", (ev) => {
     undoStack.push(JSON.parse(JSON.stringify(markers)));
     markers.splice(idx, 1);
     draw();
+    setDirty(true);
   }
 });
 
@@ -456,6 +486,7 @@ canvas.addEventListener("wheel", (ev) => {
 
   offsetX += (cssX - afterCanvasX);
   offsetY += (cssY - afterCanvasY);
+  setDirty(true);
   draw();
 }, { passive: false });
 
@@ -490,7 +521,8 @@ function saveProject(forceSaveAs = false) {
   a.click();
   URL.revokeObjectURL(a.href);
 
-  currentProjectName = fileName;
+  setProjectName(fileName);
+  setDirty(false);
 }
 
 function applyProjectData(data, fileNameFromDialog) {
@@ -518,7 +550,8 @@ function applyProjectData(data, fileNameFromDialog) {
       offsetX = (canvas.clientWidth - dispW) / 2;
       offsetY = (canvas.clientHeight - dispH) / 2;
     }
-    currentProjectName = fileNameFromDialog || null;
+    setProjectName(fileNameFromDialog || null);
+    setDirty(false);
     undoStack = [];
     draw();
   };
@@ -728,7 +761,8 @@ for (let i = 0; i < 4; i++) {
       };
       updatePresetVisual(i);
       setSelectedPreset(i);
-    });
+    setDirty(true);
+      });
   }
   if (presetBtns[i]) {
     presetBtns[i].addEventListener("click", () => {
@@ -755,7 +789,8 @@ for (let i = 0; i < 4; i++) {
       hotSlots[i] = null;
       updatePresetVisual(i);
       if (selectedPresetIndex === i) setSelectedPreset(-1);
-    });
+    setDirty(true);
+      });
   }
 }
 updateAllPresetVisuals();
@@ -791,6 +826,7 @@ window.addEventListener("keydown", (e) => {
         if (undoStack.length) {
           markers = undoStack.pop();
           draw();
+          setDirty(true);
         }
         break;
     }
@@ -856,8 +892,9 @@ window.addEventListener("drop", (ev) => {
         offsetY = (canvas.clientHeight - dispH) / 2;
         markers = [];
         undoStack = [];
-        currentProjectName = null;
-        draw();
+        setProjectName(null);
+      setDirty(true);
+      draw();
       };
       img.src = imageSrc;
     };
@@ -921,7 +958,8 @@ function resetProjectFull() {
   setSelectedPreset(-1);
   updateAllPresetVisuals();
 
-  currentProjectName = null;
+  setProjectName(null);
+  setDirty(false);
 
   draw();
 }
