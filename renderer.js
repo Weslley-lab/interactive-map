@@ -40,8 +40,208 @@ const exitSaveBtn = document.getElementById("exitSaveBtn");
 const exitWithoutSaveBtn = document.getElementById("exitWithoutSaveBtn");
 const exitCancelBtn = document.getElementById("exitCancelBtn");
 
+// ---------- BACKGROUND IMAGE ADJUST (UI) ----------
+const bgEditBtn = document.getElementById("bgEditBtn");
+const bgAdjustModal = document.getElementById("bgAdjustModal");
+const bgAdjBrightness = document.getElementById("bgAdjBrightness");
+const bgAdjContrast = document.getElementById("bgAdjContrast");
+const bgAdjSaturation = document.getElementById("bgAdjSaturation");
+const bgAdjHue = document.getElementById("bgAdjHue");
+const bgAdjBlur = document.getElementById("bgAdjBlur");
+const bgAdjGrayscale = document.getElementById("bgAdjGrayscale");
+
+const bgAdjBrightnessVal = document.getElementById("bgAdjBrightnessVal");
+const bgAdjContrastVal = document.getElementById("bgAdjContrastVal");
+const bgAdjSaturationVal = document.getElementById("bgAdjSaturationVal");
+const bgAdjHueVal = document.getElementById("bgAdjHueVal");
+const bgAdjBlurVal = document.getElementById("bgAdjBlurVal");
+const bgAdjGrayscaleVal = document.getElementById("bgAdjGrayscaleVal");
+
+const bgAdjResetBtn = document.getElementById("bgAdjResetBtn");
+const bgAdjCloseBtn = document.getElementById("bgAdjCloseBtn");
+
+
+// ---------- THEME (dark/light/cristal/cristal-dark) ----------
+const themeSelect = document.getElementById("themeSelect");
+
+function getTheme() {
+  const t = (document.documentElement && document.documentElement.dataset && document.documentElement.dataset.theme) || "dark";
+  return (t === "light" || t === "dark" || t === "cristal" || t === "cristal-dark" || t === "terminal" || t === "aurora") ? t : "dark";
+}
+
+function isLightTheme() {
+  const t = getTheme();
+  return t === "light" || t === "cristal";
+}
+
+function applyTheme(theme) {
+  const t = (theme === "light" || theme === "dark" || theme === "cristal" || theme === "cristal-dark" || theme === "terminal" || theme === "aurora") ? theme : "dark";
+  if (document.documentElement) document.documentElement.dataset.theme = t;
+  if (themeSelect) themeSelect.value = t;
+  try { localStorage.setItem("mi_theme", t); } catch (_) {}
+  // Redesenha elementos baseados em canvas
+  try { updateAllPresetVisuals(); } catch (_) {}
+  try { draw(); } catch (_) {}
+}
+
+if (themeSelect) {
+  themeSelect.addEventListener("change", () => {
+    applyTheme(themeSelect.value);
+  });
+}
+
+// inicializa tema (default: dark)
+(function initTheme() {
+  let saved = "dark";
+  try { saved = localStorage.getItem("mi_theme") || "dark"; } catch (_) {}
+  applyTheme(saved);
+})();
 let img = null;
 let imageSrc = null;
+
+
+
+// Ajustes (filtros) aplicados SOMENTE na imagem de fundo (não afeta marcadores)
+function defaultBgAdjust() {
+  return {
+    brightness: 100,  // %
+    contrast: 100,    // %
+    saturation: 100,  // %
+    hue: 0,           // deg
+    blur: 0,          // px
+    grayscale: 0      // %
+  };
+}
+
+function clampNumber(n, min, max) {
+  const v = Number(n);
+  if (!Number.isFinite(v)) return min;
+  return Math.max(min, Math.min(max, v));
+}
+
+function sanitizeBgAdjust(obj) {
+  const d = defaultBgAdjust();
+  if (!obj || typeof obj !== "object") return d;
+  return {
+    brightness: clampNumber(obj.brightness, 50, 150),
+    contrast: clampNumber(obj.contrast, 50, 150),
+    saturation: clampNumber(obj.saturation, 0, 200),
+    hue: clampNumber(obj.hue, -180, 180),
+    blur: clampNumber(obj.blur, 0, 10),
+    grayscale: clampNumber(obj.grayscale, 0, 100)
+  };
+}
+
+let bgAdjust = defaultBgAdjust();
+
+function getBgFilterString() {
+  const a = bgAdjust || defaultBgAdjust();
+  // Ordem escolhida para ficar previsível ao usuário
+  return (
+    `brightness(${a.brightness}%) ` +
+    `contrast(${a.contrast}%) ` +
+    `saturate(${a.saturation}%) ` +
+    `hue-rotate(${a.hue}deg) ` +
+    `blur(${a.blur}px) ` +
+    `grayscale(${a.grayscale}%)`
+  );
+}
+
+function updateBgAdjustUIFromState() {
+  if (!bgAdjBrightness) return;
+
+  bgAdjBrightness.value = String(bgAdjust.brightness);
+  bgAdjContrast.value = String(bgAdjust.contrast);
+  bgAdjSaturation.value = String(bgAdjust.saturation);
+  bgAdjHue.value = String(bgAdjust.hue);
+  bgAdjBlur.value = String(bgAdjust.blur);
+  bgAdjGrayscale.value = String(bgAdjust.grayscale);
+
+  if (bgAdjBrightnessVal) bgAdjBrightnessVal.textContent = `${bgAdjust.brightness}%`;
+  if (bgAdjContrastVal) bgAdjContrastVal.textContent = `${bgAdjust.contrast}%`;
+  if (bgAdjSaturationVal) bgAdjSaturationVal.textContent = `${bgAdjust.saturation}%`;
+  if (bgAdjHueVal) bgAdjHueVal.textContent = `${bgAdjust.hue}°`;
+  if (bgAdjBlurVal) bgAdjBlurVal.textContent = `${Number(bgAdjust.blur).toFixed(1)}px`;
+  if (bgAdjGrayscaleVal) bgAdjGrayscaleVal.textContent = `${bgAdjust.grayscale}%`;
+}
+
+function applyBgAdjustFromUI() {
+  if (!bgAdjBrightness) return;
+  bgAdjust = sanitizeBgAdjust({
+    brightness: bgAdjBrightness.value,
+    contrast: bgAdjContrast.value,
+    saturation: bgAdjSaturation.value,
+    hue: bgAdjHue.value,
+    blur: bgAdjBlur.value,
+    grayscale: bgAdjGrayscale.value
+  });
+
+  updateBgAdjustUIFromState();
+  setDirty(true);
+  draw();
+}
+
+function showBgAdjustModal() {
+  if (!bgAdjustModal) return;
+  if (!img) {
+    alert("Abra uma imagem/projeto primeiro para editar a imagem de fundo.");
+    return;
+  }
+  updateBgAdjustUIFromState();
+  bgAdjustModal.classList.remove("hidden");
+}
+
+function hideBgAdjustModal() {
+  if (!bgAdjustModal) return;
+  bgAdjustModal.classList.add("hidden");
+}
+
+// listeners UI
+if (bgEditBtn) {
+  bgEditBtn.addEventListener("click", () => {
+    try {
+      // fecha o menu de configurações (se existir no HTML)
+      const settingsBox = document.getElementById("settingsBox");
+      if (settingsBox) settingsBox.classList.add("hidden");
+    } catch (_) {}
+    showBgAdjustModal();
+  });
+}
+
+if (bgAdjBrightness) {
+  [bgAdjBrightness, bgAdjContrast, bgAdjSaturation, bgAdjHue, bgAdjBlur, bgAdjGrayscale].forEach(el => {
+    if (!el) return;
+    el.addEventListener("input", applyBgAdjustFromUI);
+  });
+}
+
+if (bgAdjResetBtn) {
+  bgAdjResetBtn.addEventListener("click", () => {
+    bgAdjust = defaultBgAdjust();
+    updateBgAdjustUIFromState();
+    setDirty(true);
+    draw();
+  });
+}
+
+if (bgAdjCloseBtn) {
+  bgAdjCloseBtn.addEventListener("click", () => {
+    hideBgAdjustModal();
+  });
+}
+
+if (bgAdjustModal) {
+  // click fora do modal fecha
+  bgAdjustModal.addEventListener("click", (ev) => {
+    if (ev.target === bgAdjustModal) hideBgAdjustModal();
+  });
+}
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && bgAdjustModal && !bgAdjustModal.classList.contains("hidden")) {
+    hideBgAdjustModal();
+  }
+});
 
 
 
@@ -283,19 +483,90 @@ function draw() {
   clearCanvas();
 
   if (!img) {
-    ctx.fillStyle = "#2b2b2b";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#9b9b9b";
-    ctx.font = "30px sans-serif";
+
+    const theme = getTheme();
+    const isCristal = (theme === "cristal" || theme === "cristal-dark");
+    const light = (theme === "light" || theme === "cristal");
+
+    // Fundo do canvas quando não há imagem/projeto carregado
+// Importante: não pintar um fundo sólido via canvas, para não sobrescrever o background CSS do #canvas
+// (isso garante que cada tema mantenha seu fundo no canvas ao alternar entre temas).
+let fgColor;
+
+if (theme === "terminal") {
+  fgColor = "#6dff6d";
+} else if (theme === "aurora") {
+  fgColor = "#962444";
+} else if (theme === "cristal") {
+  fgColor = "#162033";
+} else if (theme === "cristal-dark") {
+  fgColor = "#eaf2ff";
+} else if (theme === "light") {
+  fgColor = "#2a2a2a";
+} else {
+  fgColor = "#9b9b9b";
+}
+
+// Mensagem central com "cartão" de vidro para leitura
+    const msg = "Abra uma imagem (Ctrl+I) ou um projeto (Ctrl+O).";
+
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    ctx.font = "600 26px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("Abra uma imagem (Ctrl+I) ou um projeto (Ctrl+O).", canvas.width / 2, canvas.height / 2);
+
+    const padX = 26;
+    const padY = 16;
+    const metrics = ctx.measureText(msg);
+    const boxW = Math.min(canvas.width - 40, metrics.width + padX * 2);
+    const boxH = 34 + padY * 2;
+    const boxX = (canvas.width - boxW) / 2;
+    const boxY = (canvas.height - boxH) / 2;
+
+    function roundRectPath(x, y, w, h, r) {
+      const rr = Math.max(0, Math.min(r, w / 2, h / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + rr, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rr);
+      ctx.arcTo(x + w, y + h, x, y + h, rr);
+      ctx.arcTo(x, y + h, x, y, rr);
+      ctx.arcTo(x, y, x + w, y, rr);
+      ctx.closePath();
+    }
+
+    // Cartão "glass" - acompanha o tema
+    if (isCristal) {
+      ctx.fillStyle = (theme === "cristal")
+        ? "rgba(255,255,255,0.38)"
+        : "rgba(18,26,45,0.40)";
+      ctx.strokeStyle = "rgba(140,180,255,0.30)";
+    } else {
+      ctx.fillStyle = "rgba(0,0,0,0.22)";
+      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    }
+    ctx.lineWidth = 1;
+
+    roundRectPath(boxX, boxY, boxW, boxH, 18);
+    ctx.fill();
+    ctx.stroke();
+
+    // Texto
+    ctx.fillStyle = fgColor;
+    ctx.fillText(msg, canvas.width / 2, canvas.height / 2);
+
+    ctx.restore();
+
     return;
   }
 
   const scale = getDisplayScale();
   ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+  // Aplica filtros apenas na imagem de fundo
+  ctx.filter = getBgFilterString();
   ctx.drawImage(img, 0, 0);
+  ctx.filter = "none";
 
   for (const m of markers) {
     drawMarkerOnCtx(ctx, m);
@@ -337,6 +608,7 @@ fileImage.addEventListener("change", (ev) => {
       offsetY = (canvas.clientHeight - dispH) / 2;
       markers = [];
       undoStack = [];
+      bgAdjust = defaultBgAdjust();
       setProjectName(null);
       setDirty(true);
       draw();
@@ -502,7 +774,9 @@ function buildProjectData() {
       canvasW: canvas.clientWidth,
       canvasH: canvas.clientHeight
     },
-    presets: hotSlots
+    imageAdjust: bgAdjust,
+    presets: hotSlots,
+    selectedPresetIndex
   };
 }
 
@@ -532,9 +806,14 @@ function applyProjectData(data, fileNameFromDialog) {
   }
   imageSrc = data.imageSrc;
   markers = Array.isArray(data.markers) ? data.markers : [];
+  bgAdjust = sanitizeBgAdjust(data.imageAdjust);
   hotSlots = Array.isArray(data.presets) ? data.presets : [null, null, null, null];
   updateAllPresetVisuals();
-  setSelectedPreset(-1);
+  if (typeof data.selectedPresetIndex === 'number') {
+    setSelectedPreset(data.selectedPresetIndex);
+  } else {
+    setSelectedPreset(-1);
+  }
 
   img = new Image();
   img.onload = () => {
@@ -586,7 +865,9 @@ exportPNGBtn.addEventListener("click", () => {
   tmp.width = img.width;
   tmp.height = img.height;
   const tctx = tmp.getContext("2d");
+  tctx.filter = getBgFilterString();
   tctx.drawImage(img, 0, 0, img.width, img.height);
+  tctx.filter = "none";
   for (const m of markers) {
     drawMarkerOnCtx(tctx, m);
   }
@@ -604,7 +885,7 @@ function clearPresetCanvas(slot) {
   cctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
   // ícone neutro: círculo branco sem preenchimento
   cctx.save();
-  cctx.strokeStyle = "#ffffff";
+  cctx.strokeStyle = isLightTheme() ? "#6b6b6b" : "#ffffff";
   cctx.lineWidth = 2;
   const cx = canvasEl.width / 2;
   const cy = canvasEl.height / 2;
@@ -721,7 +1002,7 @@ function updatePresetVisual(slot) {
 
   if (!data) {
     // preset vazio: ícone neutro e sem seleção
-    btn.style.border = "1px solid #333333";
+    btn.style.border = isLightTheme() ? "1px solid #b8b8b8" : "1px solid #333333";
     btn.style.boxShadow = "none";
     clearPresetCanvas(slot);
 
@@ -734,7 +1015,7 @@ function updatePresetVisual(slot) {
 
   // preset com dados: preview + borda indicativa (cor do preset)
   btn.style.border = `2px solid ${data.color || "#ffffff"}`;
-  btn.style.boxShadow = "0 0 6px rgba(0,0,0,0.6)";
+  btn.style.boxShadow = isLightTheme() ? "0 0 10px rgba(0,0,0,0.18)" : "0 0 6px rgba(0,0,0,0.6)";
   drawPresetPreview(slot, data);
 
   updatePresetSelectionVisuals();
@@ -892,6 +1173,7 @@ window.addEventListener("drop", (ev) => {
         offsetY = (canvas.clientHeight - dispH) / 2;
         markers = [];
         undoStack = [];
+        bgAdjust = defaultBgAdjust();
         setProjectName(null);
       setDirty(true);
       draw();
@@ -945,6 +1227,7 @@ function hideExitModal() {
 function resetProjectFull() {
   img = null;
   imageSrc = null;
+  bgAdjust = defaultBgAdjust();
 
   baseScale = 1;
   zoom = 1;

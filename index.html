@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <title>Mapa Interativo</title>
@@ -145,10 +145,30 @@
       </div>
     </div>
 
-    <div style="margin-left:auto; position:relative;">
+    <div style="margin-left:auto; position:relative; display:flex; align-items:center; gap:6px;">
+      <button id="settingsBtn" class="small icon-btn" data-tooltip="Configurações">⚙️</button>
       <button id="shortcutsBtn" class="small">🆘 Ajuda</button>
+      <div id="settingsBox" class="popup-menu hidden" style="right:0;">
+        <div class="popup-title">Configurações</div>
+        <div class="popup-field">
+          <label>Tema:
+            <select id="themeSelect" style="width:100%;">
+              <option value="dark">Escuro</option>
+              <option value="light">Claro</option>
+                          <option value="cristal">Cristal</option>
+              <option value="cristal-dark">Aurora</option>              
+			  <option value="terminal">Terminal</option>
+              <option value="aurora">Terra</option>
 
-      <div id="shortcutsBox" class="popup-menu hidden" style="right:0;">
+</select>
+          </label>
+        </div>
+        <div class="popup-divider"></div>
+        <button id="bgEditBtn" class="popup-action" type="button">Editar imagem de fundo</button>
+      </div>
+
+
+<div id="shortcutsBox" class="popup-menu hidden" style="right:0;">
         <div class="popup-title">Atalhos</div>
         <div class="popup-field"><b>Botão esquerdo</b> — Criar marcador</div>
         <div class="popup-field"><b>Botão direito</b> — Remover marcador</div>
@@ -185,16 +205,64 @@
     </div>
   </div>
 
+
+  <!-- Modal: editar imagem de fundo -->
+  <div id="bgAdjustModal" class="modal-backdrop hidden">
+    <div class="modal-content" style="max-width: 560px;">
+      <div class="modal-title"><b>Editar imagem de fundo</b></div>
+      <div class="bg-adjust-grid">
+        <div class="bg-adjust-row">
+          <label>Brilho <span id="bgAdjBrightnessVal" class="val">100%</span></label>
+          <input id="bgAdjBrightness" class="range-center" type="range" min="50" max="150" step="1" value="100" />
+        </div>
+
+        <div class="bg-adjust-row">
+          <label>Contraste <span id="bgAdjContrastVal" class="val">100%</span></label>
+          <input id="bgAdjContrast" class="range-center" type="range" min="50" max="150" step="1" value="100" />
+        </div>
+
+        <div class="bg-adjust-row">
+          <label>Saturação <span id="bgAdjSaturationVal" class="val">100%</span></label>
+          <input id="bgAdjSaturation" class="range-center" type="range" min="0" max="200" step="1" value="100" />
+        </div>
+
+        <div class="bg-adjust-row">
+          <label>Matiz <span id="bgAdjHueVal" class="val">0°</span></label>
+          <input id="bgAdjHue" class="range-center" type="range" min="-180" max="180" step="1" value="0" />
+        </div>
+
+        <div class="bg-adjust-row">
+          <label>Desfoque <span id="bgAdjBlurVal" class="val">0.0px</span></label>
+          <input id="bgAdjBlur" class="range-center" type="range" min="0" max="10" step="0.1" value="0" />
+        </div>
+
+        <div class="bg-adjust-row">
+          <label>Escala de cinza <span id="bgAdjGrayscaleVal" class="val">0%</span></label>
+          <input id="bgAdjGrayscale" class="range-center" type="range" min="0" max="100" step="1" value="0" />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="bgAdjResetBtn"><b>Resetar</b></button>
+        <button id="bgAdjCloseBtn"><b>Aplicar</b></button>
+      </div>
+    </div>
+  </div>
+
+
     <script src="renderer.js"></script>
   <script>
     const markerMenuBtn = document.getElementById("markerMenuBtn");
     const markerMenu = document.getElementById("markerMenu");
     const shortcutsBtn = document.getElementById("shortcutsBtn");
     const shortcutsBox = document.getElementById("shortcutsBox");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsBox = document.getElementById("settingsBox");
 
-    function closeAllMenus() {
+function closeAllMenus() {
       if (markerMenu) markerMenu.classList.add("hidden");
       if (shortcutsBox) shortcutsBox.classList.add("hidden");
+      if (settingsBox) settingsBox.classList.add("hidden");
     }
 
     function toggleMenu(menu) {
@@ -216,13 +284,21 @@
       toggleMenu(shortcutsBox);
     });
 
-    document.addEventListener("click", (e) => {
+    
+
+    settingsBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMenu(settingsBox);
+    });
+document.addEventListener("click", (e) => {
       const t = e.target;
       if (
         markerMenuBtn && markerMenu &&
         !markerMenuBtn.contains(t) && !markerMenu.contains(t) &&
         shortcutsBtn && shortcutsBox &&
-        !shortcutsBtn.contains(t) && !shortcutsBox.contains(t)
+        !shortcutsBtn.contains(t) && !shortcutsBox.contains(t) &&
+        settingsBtn && settingsBox &&
+        !settingsBtn.contains(t) && !settingsBox.contains(t)
       ) {
         closeAllMenus();
       }
