@@ -1,11 +1,263 @@
+/* LIGHT THEME VERSION: mais escuro (gerado em 2025-12-20 15:56:06) */
+
+/* styles.css - Mapa Interativo (tema com alternância dark/light)
+   Light theme inspirado no "Word": fundos cinza suaves, controles claros com borda discreta,
+   sem branco estourando.
+*/
+
+:root {
+  /* Tipografia */
+  --font-ui: system-ui, Arial, sans-serif;
+
+  /* Dark (padrão) */
+  --bg: linear-gradient(180deg, #1f2022 0%, #141516 100%);
+  --text: #ffffff;
+
+  --toolbar-bg: #202124;
+  --toolbar-border: #2e2f31;
+
+  --control-bg: #2d2f31;
+  --control-bg-hover: #3c4043;
+  --control-border: transparent;
+  --control-text: #ffffff;
+
+  --canvas-bg: linear-gradient(180deg, #2f2f2f 0%, #262626 100%);
+
+  --panel-bg: #1e1f21;
+  --panel-border: rgba(255,255,255,0.10);
+
+  --divider: rgba(255,255,255,0.08);
+
+  --muted: #cfcfcf;
+
+  --tooltip-bg: #111;
+  --tooltip-text: #fff;
+
+  --preset-slot-bg: #151618;
+  --preset-slot-border: #333333;
+  --preset-btn-bg: #202124;
+  --preset-btn-border: #444444;
+
+  --modal-bg: #202124;
+  --modal-text: #e0e0e0;
+
+  --shadow: 0 6px 20px rgba(0,0,0,0.60);
+  --shadow-strong: 0 8px 30px rgba(0,0,0,0.70);
+}
+
+/* Light theme (Word-like) */
+:root[data-theme="light"] {
+  --bg: linear-gradient(180deg, #dadada 0%, #c8c8c8 100%);              /* cinza de fundo do app (mais escuro, visível) */
+  --text: #1f1f1f;
+
+  --toolbar-bg: #dcdcdc;      /* barra superior mais escura */
+  --toolbar-border: #bcbcbc;
+
+  --control-bg: #e3e3e3;      /* botões/inputs */
+  --control-bg-hover: #d6d6d6;
+  --control-border: #b9b9b9;
+  --control-text: #1f1f1f;
+
+  --canvas-bg: linear-gradient(180deg, #c9c9c9 0%, #bdbdbd 100%);       /* área do canvas/campo de trabalho */
+  --panel-bg: #e1e1e1;        /* menus/painéis */
+  --panel-border: rgba(0,0,0,0.16);
+
+  --divider: rgba(0,0,0,0.14);
+  --muted: #404040;
+
+  --tooltip-bg: #1a1a1a;
+  --tooltip-text: #fff;
+
+  --preset-slot-bg: #d2d2d2;
+  --preset-slot-border: #b8b8b8;
+  --preset-btn-bg: #e1e1e1;
+  --preset-btn-border: #b9b9b9;
+
+  --modal-bg: #e1e1e1;
+  --modal-text: #222;
+
+  --shadow: 0 10px 24px rgba(0,0,0,0.18);
+  --shadow-strong: 0 14px 40px rgba(0,0,0,0.22);
+}
+
+/* Cristal theme (glass / mirrored / modern) */
+:root[data-theme="cristal"] {
+  /* Tema CRISTAL (claro): cinza e azul (frio), com efeito vidro */
+  --bg:
+    radial-gradient(950px circle at 18% 10%, rgba(95, 160, 255, 0.28), transparent 58%),
+    radial-gradient(840px circle at 82% 16%, rgba(185, 225, 255, 0.52), transparent 60%),
+    radial-gradient(720px circle at 52% 88%, rgba(235, 242, 252, 0.78), transparent 62%),
+    linear-gradient(180deg, #f9fbff 0%, #edf2f9 56%, #e6ebf4 100%);
+
+  --text: #142033;
+  --muted: #536477;
+
+  --toolbar-bg: rgba(245, 250, 255, 0.46);
+  --toolbar-border: rgba(140, 170, 210, 0.58);
+
+  --panel-bg: rgba(245, 250, 255, 0.44);
+  --panel-border: rgba(140, 170, 210, 0.54);
+
+  /* Menus (menos translúcidos que os botões) */
+  --menu-bg: rgba(248, 252, 255, 0.78);
+  --menu-border: rgba(140, 170, 210, 0.78);
+
+  --divider: rgba(120, 145, 175, 0.40);
+
+  /* Controles (mesma translucidez em TODOS os botões/inputs) */
+  --control-bg: rgba(255, 255, 255, 0.26);
+  --control-bg-hover: rgba(255, 255, 255, 0.34);
+  --control-border: rgba(140, 170, 210, 0.62);
+  --control-text: #102033;
+
+  /* Canvas: padrão alinhado com a barra superior */
+  --canvas-bg: var(--bg);
+  --tooltip-bg: rgba(18, 26, 38, 0.78);
+  --tooltip-text: #ffffff;
+
+  --preset-slot-bg: rgba(245, 250, 255, 0.34);
+  --preset-slot-border: rgba(140, 170, 210, 0.58);
+  --preset-btn-bg: rgba(245, 250, 255, 0.26);
+  --preset-btn-border: rgba(140, 170, 210, 0.62);
+
+  --modal-bg: rgba(245, 250, 255, 0.46);
+  --modal-text: #102033;
+
+  --shadow: 0 12px 36px rgba(10, 16, 28, 0.16);
+  --shadow-strong: 0 18px 56px rgba(10, 16, 28, 0.20);
+}
+
+:root[data-theme="cristal-dark"] {
+  /* Tema CRISTAL ESCURO: colorido, escuro, com vidro e reflexo */
+  --bg:
+    radial-gradient(980px circle at 18% 12%, rgba(0, 205, 255, 0.22), transparent 58%),
+    radial-gradient(860px circle at 84% 20%, rgba(171, 78, 255, 0.20), transparent 60%),
+    radial-gradient(760px circle at 55% 88%, rgba(255, 85, 170, 0.12), transparent 62%),
+    linear-gradient(180deg, #050714 0%, #071026 45%, #061a2b 100%);
+
+  --text: #eaf2ff;
+  --muted: #a7b4c9;
+
+  --toolbar-bg: rgba(18, 26, 45, 0.38);
+  --toolbar-border: rgba(140, 180, 255, 0.20);
+
+  --panel-bg: rgba(18, 26, 45, 0.34);
+  --panel-border: rgba(140, 180, 255, 0.18);
+
+  /* Menus (menos translúcidos que botões) */
+  --menu-bg: linear-gradient(180deg, rgba(18, 30, 55, 0.82), rgba(10, 12, 28, 0.76));
+  --menu-border: rgba(130, 180, 255, 0.30);
+  --canvas-bg: var(--bg);
+  --accent: #55b3ff;
+  --accent-2: #b04cff;
+
+  /* Transparência padronizada (igual em TODOS os botões/inputs) */
+  --control-bg: rgba(255, 255, 255, 0.10);
+  --control-bg-hover: rgba(255, 255, 255, 0.14);
+  --control-border: rgba(200, 230, 255, 0.22);
+  --control-border-hover: rgba(220, 245, 255, 0.35);
+  --control-text: #f2f7ff;
+
+  --tooltip-bg: rgba(10, 14, 24, 0.86);
+  --tooltip-text: #ffffff;
+
+  --preset-slot-bg: rgba(18, 26, 45, 0.30);
+  --preset-slot-border: rgba(140, 180, 255, 0.20);
+  --preset-btn-bg: rgba(255, 255, 255, 0.08);
+  --preset-btn-border: rgba(140, 180, 255, 0.22);
+
+  --modal-bg: rgba(18, 26, 45, 0.46);
+  --modal-text: #eaf2ff;
+
+  --shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 22px 66px rgba(0, 0, 0, 0.40);
+}
+
+
+/* Glass effects */
+:root[data-theme^="cristal"] .toolbar,
+:root[data-theme^="cristal"] .popup-menu,
+:root[data-theme^="cristal"] .modal-content,
+:root[data-theme^="cristal"] .preset-slot {
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* Buttons / inputs as glass */
+:root[data-theme^="cristal"] .toolbar button,
+:root[data-theme^="cristal"] .toolbar select,
+:root[data-theme^="cristal"] .toolbar input {
+  border-radius: 14px;
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.30) inset;
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+:root[data-theme^="cristal"] .toolbar button:hover,
+:root[data-theme^="cristal"] .toolbar select:hover,
+:root[data-theme^="cristal"] .toolbar input:hover {
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.42),
+    0 1px 0 rgba(255,255,255,0.34) inset;
+  transform: translateY(-1px);
+}
+
+/* Popups */
+:root[data-theme^="cristal"] .popup-menu {
+  background: var(--menu-bg);
+  border-color: var(--menu-border);
+  border-radius: 14px;
+  box-shadow:
+    0 18px 55px rgba(0,0,0,0.55),
+    0 1px 0 rgba(255,255,255,0.22) inset;
+}
+
+/* Presets */
+:root[data-theme^="cristal"] .preset-btn {
+  border-radius: 12px;
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.28) inset;
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+/* Preset action buttons as glass with subtle glow */
+:root[data-theme^="cristal"] .preset-add,
+:root[data-theme^="cristal"] .preset-reset {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #ffffff;
+}
+:root[data-theme^="cristal"] .preset-add:hover {
+  background: rgba(80, 255, 160, 0.16);
+  box-shadow: 0 0 0 1px rgba(80, 255, 160, 0.22), 0 10px 18px rgba(0,0,0,0.35);
+}
+:root[data-theme^="cristal"] .preset-reset:hover {
+  background: rgba(255, 90, 110, 0.16);
+  box-shadow: 0 0 0 1px rgba(255, 90, 110, 0.22), 0 10px 18px rgba(0,0,0,0.35);
+}
+
+/* Shape buttons */
+:root[data-theme^="cristal"] .shape-option {
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.26), 0 1px 0 rgba(255,255,255,0.22) inset;
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+:root[data-theme^="cristal"] .shape-option.active {
+  border-color: rgba(0, 224, 255, 0.65);
+  box-shadow: 0 0 0 2px rgba(0, 224, 255, 0.30), 0 10px 20px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.22) inset;
+}
+
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: system-ui, Arial, sans-serif;
-  background: #1b1c1d;
-  color: #ffffff;
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
 }
 
 body {
@@ -14,31 +266,42 @@ body {
 }
 
 .toolbar {
-  background: #202124;
-  color: #ffffff;
+  background: var(--toolbar-bg);
+  color: var(--text);
   padding: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  border-bottom: 1px solid #2e2f31;
+  border-bottom: 1px solid var(--toolbar-border);
   box-sizing: border-box;
 }
 
+/* Controles na toolbar */
 .toolbar button,
 .toolbar select,
 .toolbar input {
-  background: #2d2f31;
-  color: #ffffff;
-  border: none;
+  background: var(--control-bg);
+  color: var(--control-text);
+  border: 1px solid var(--control-border);
   padding: 6px 8px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  box-shadow: none;
 }
 
-.toolbar button:hover {
-  background: #3c4043;
+.toolbar button:hover,
+.toolbar select:hover,
+.toolbar input:hover {
+  background: var(--control-bg-hover);
+}
+
+.toolbar select:focus,
+.toolbar input:focus,
+.toolbar button:focus {
+  outline: 2px solid rgba(0, 120, 212, 0.35); /* foco estilo Office */
+  outline-offset: 1px;
 }
 
 .toolbar label {
@@ -48,22 +311,23 @@ body {
   gap: 6px;
 }
 
+/* Canvas */
 #canvas {
   flex: 1;
   width: 100%;
   height: calc(100vh - 60px);
   display: block;
-  background: #2b2b2b;
+  background: var(--canvas-bg);
   cursor: crosshair;
   image-rendering: optimizeQuality;
 }
 
 .info {
   font-size: 12px;
-  color: #cfcfcf;
+  color: var(--muted);
   padding: 6px 10px;
-  background: #171717;
-  border-top: 1px solid #2e2e2e;
+  background: var(--toolbar-bg);
+  border-top: 1px solid var(--toolbar-border);
 }
 
 .hidden {
@@ -82,19 +346,19 @@ body {
   display: flex;
   align-items: stretch;
   gap: 4px;
-  background: #151618;
-  border-radius: 8px;
+  background: var(--preset-slot-bg);
+  border-radius: 10px;
   padding: 2px 4px;
-  border: 1px solid #333333;
+  border: 1px solid var(--preset-slot-border);
 }
 
-/* Preset selecionado (destaque dourado, como seleção de forma) */
+/* Preset selecionado */
 .preset-slot.selected {
   border-color: #f1c40f;
   box-shadow: 0 0 0 1px #f1c40f;
 }
 
-/* Preset vazio: não selecionável (o botão + continua disponível) */
+/* Preset vazio */
 .preset-slot.empty .preset-btn {
   opacity: 0.45;
   cursor: not-allowed;
@@ -108,9 +372,9 @@ body {
   align-items: center;
   justify-content: center;
   padding: 4px 6px;
-  background: #202124;
-  border-radius: 6px;
-  border: 1px solid #444444;
+  background: var(--preset-btn-bg);
+  border-radius: 8px;
+  border: 1px solid var(--preset-btn-border);
 }
 
 .preset-side {
@@ -133,23 +397,18 @@ body {
   flex: 1;
 }
 
+/* Mantém as cores "ação" (boa legibilidade em ambos temas) */
 .preset-add {
   background: #27ae60;
   color: #000000;
 }
-
-.preset-add:hover {
-  background: #2ecc71;
-}
+.preset-add:hover { background: #2ecc71; }
 
 .preset-reset {
   background: #c0392b;
   color: #000000;
 }
-
-.preset-reset:hover {
-  background: #e74c3c;
-}
+.preset-reset:hover { background: #e74c3c; }
 
 /* Ajuda */
 .small {
@@ -157,24 +416,40 @@ body {
   padding: 4px 6px;
 }
 
-/* Modal de saída */
+/* Botão de ícone (engrenagem) */
+.icon-btn {
+  width: 32px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.60);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
+:root[data-theme="light"] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
 .modal-content {
-  background: #202124;
-  border-radius: 10px;
+  background: var(--modal-bg);
+  border-radius: 12px;
   padding: 16px 18px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--shadow-strong);
   max-width: 360px;
   width: 100%;
+  border: 1px solid var(--panel-border);
 }
 
 .modal-title {
@@ -185,7 +460,7 @@ body {
 
 .modal-text {
   font-size: 14px;
-  color: #e0e0e0;
+  color: var(--modal-text);
   margin-bottom: 14px;
 }
 
@@ -196,17 +471,33 @@ body {
 }
 
 .modal-actions button {
+  /* segue o padrão do tema selecionado (mesmas variáveis dos controles) */
   font-size: 13px;
+  background: var(--control-bg);
+  color: var(--control-text);
+  border: 1px solid var(--control-border);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-/* Pop-up genérico de menus (forma, borda, ajuda) */
+.modal-actions button:hover {
+  background: var(--control-bg-hover);
+}
+
+.modal-actions button:focus {
+  outline: 2px solid rgba(0, 120, 212, 0.35);
+  outline-offset: 1px;
+}
+
+/* Pop-up genérico */
 .popup-menu {
   position: absolute;
   top: 110%;
-  background: #1e1f21;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-  border-radius: 8px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow);
+  border-radius: 10px;
   padding: 10px 12px;
   font-size: 13px;
   z-index: 999;
@@ -228,14 +519,101 @@ body {
 
 .popup-divider {
   height: 1px;
-  background: rgba(255,255,255,0.08);
+  background: var(--divider);
   margin: 10px 0;
+}
+
+
+.popup-action {
+  width: 100%;
+  text-align: left;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: var(--control-bg);
+  color: var(--control-text);
+  cursor: pointer;
+}
+.popup-action:hover {
+  background: var(--control-bg-hover);
+}
+
+.bg-adjust-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+.bg-adjust-row label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.bg-adjust-row .val {
+  opacity: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"].range-center {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    rgba(127,127,127,0.22) 0%,
+    rgba(127,127,127,0.22) 49.5%,
+    var(--divider) 49.5%,
+    var(--divider) 50.5%,
+    rgba(127,127,127,0.22) 50.5%,
+    rgba(127,127,127,0.22) 100%
+  );
+  border: 1px solid var(--panel-border);
+  outline: none;
+}
+input[type="range"].range-center::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--control-bg-hover);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+input[type="range"].range-center::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    rgba(127,127,127,0.22) 0%,
+    rgba(127,127,127,0.22) 49.5%,
+    var(--divider) 49.5%,
+    var(--divider) 50.5%,
+    rgba(127,127,127,0.22) 50.5%,
+    rgba(127,127,127,0.22) 100%
+  );
+  border: 1px solid var(--panel-border);
+}
+input[type="range"].range-center::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--control-bg-hover);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
 }
 
 .popup-field {
   margin: 4px 0;
 }
 
+/* Opções de forma */
 .shape-row {
   display: flex;
   gap: 6px;
@@ -246,101 +624,24 @@ body {
   width: 28px;
   height: 28px;
   padding: 0;
-  border-radius: 6px;
-  background: #2d2f31;
-  border: 1px solid #555;
+  border-radius: 8px;
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 
+.shape-option:hover {
+  background: var(--control-bg-hover);
+}
+
 .shape-option.active {
   border-color: #f1c40f;
   box-shadow: 0 0 0 1px #f1c40f;
-  background: #35363a;
+  background: var(--control-bg-hover);
 }
-
-.shape-icon {
-  display: block;
-  width: 18px;
-  height: 18px;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.shape-icon.circle {
-  border-radius: 50%;
-  border: 2px solid #ffffff;
-}
-
-.shape-icon.square {
-  border: 2px solid #ffffff;
-}
-
-.shape-icon.triangle {
-  position: relative;
-  width: 18px;
-  height: 18px;
-}
-.shape-icon.triangle::before,
-.shape-icon.triangle::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.shape-icon.triangle::before {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 14px solid #ffffff;
-  bottom: 1px;
-}
-.shape-icon.triangle::after {
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 10px solid #1e1f21;
-  bottom: 3px;
-}
-
-.shape-icon.cross::before,
-.shape-icon.cross::after {
-  content: "";
-  position: absolute;
-  background: #ffffff;
-  left: 50%;
-  top: 50%;
-  transform-origin: center;
-}
-
-.shape-icon.cross::before {
-  width: 2px;
-  height: 18px;
-  transform: translate(-50%, -50%);
-}
-
-.shape-icon.cross::after {
-  width: 18px;
-  height: 2px;
-  transform: translate(-50%, -50%);
-}
-
-
-.shape-icon.question {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-
-
 
 /* Shape icons using only Unicode symbols */
 .shape-icon {
@@ -369,7 +670,7 @@ body {
   animation: popupFadeIn 0.18s ease-out;
 }
 
-/* Tooltip (atalhos) */
+/* Tooltip */
 [data-tooltip] {
   position: relative;
 }
@@ -379,16 +680,17 @@ body {
   bottom: -26px;
   left: 50%;
   transform: translateX(-50%);
-  background: #111;
-  color: #fff;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
   font-size: 11px;
   padding: 4px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: opacity .15s ease;
   z-index: 10000;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.22);
 }
 [data-tooltip]:hover::after { opacity: 1; }
 
@@ -400,4 +702,483 @@ body {
   0% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
   50% { box-shadow: 0 0 0 3px rgba(241,196,15,0.9); }
   100% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
+}
+
+
+/* Light-theme refinements for clearer contrast */
+:root[data-theme="light"] .toolbar {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+}
+
+
+/* =========================================================
+   CRISTAL (claro) — padronização de translucidez (somente aqui)
+   ========================================================= */
+
+/* Suaviza sombras no tema claro */
+:root[data-theme^="cristal"] .toolbar,
+:root[data-theme^="cristal"] .popup-menu,
+:root[data-theme^="cristal"] .modal-content,
+:root[data-theme^="cristal"] .preset-slot {
+  box-shadow: var(--shadow) !important;
+}
+
+/* Todos os botões/inputs com a MESMA translucidez e estilo vidro */
+:root[data-theme^="cristal"] button,
+:root[data-theme^="cristal"] select,
+:root[data-theme^="cristal"] input,
+:root[data-theme^="cristal"] .preset-btn,
+:root[data-theme^="cristal"] .preset-add,
+:root[data-theme^="cristal"] .preset-reset,
+:root[data-theme^="cristal"] .shape-option,
+:root[data-theme^="cristal"] .style-option {
+  background: var(--control-bg) !important;
+  border: 1px solid var(--control-border) !important;
+  color: var(--control-text) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 14px 28px rgba(10, 16, 28, 0.10),
+    0 1px 0 rgba(255, 255, 255, 0.82) inset !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* Hover consistente (mais “brilho”, mantendo a mesma translucidez base) */
+:root[data-theme^="cristal"] button:hover,
+:root[data-theme^="cristal"] select:hover,
+:root[data-theme^="cristal"] input:hover,
+:root[data-theme^="cristal"] .preset-btn:hover,
+:root[data-theme^="cristal"] .preset-add:hover,
+:root[data-theme^="cristal"] .preset-reset:hover,
+:root[data-theme^="cristal"] .shape-option:hover,
+:root[data-theme^="cristal"] .style-option:hover {
+  background: var(--control-bg-hover) !important;
+  border-color: rgba(90, 132, 205, 0.78) !important;
+}
+
+/* Estado ativo/selecionado com acento azul, sem perder o “vidro” */
+:root[data-theme^="cristal"] button.active,
+:root[data-theme^="cristal"] .shape-option.active,
+:root[data-theme^="cristal"] .style-option.active {
+  border-color: rgba(47, 128, 255, 0.90) !important;
+  box-shadow:
+    0 0 0 2px rgba(47, 128, 255, 0.18) inset,
+    0 14px 28px rgba(10, 16, 28, 0.10),
+    0 1px 0 rgba(255, 255, 255, 0.82) inset !important;
+}
+
+/* Canvas: cursor e “feel” coerentes no tema claro */
+:root[data-theme^="cristal"] #canvas {
+  cursor: crosshair;
+}
+
+/* ===========================
+   CRISTAL THEMES - POPUP SELECT FIX + CONSISTENT GLASS
+   (aplica somente em Cristal / Cristal Escuro)
+   =========================== */
+:root[data-theme^="cristal"] .popup-menu select,
+:root[data-theme^="cristal"] .popup-menu input {
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  color: var(--control-text);
+  border-radius: 14px;
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.30) inset;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+:root[data-theme^="cristal"] .popup-menu select:hover,
+:root[data-theme^="cristal"] .popup-menu input:hover {
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.42),
+    0 1px 0 rgba(255,255,255,0.36) inset;
+  border-color: rgba(140, 180, 255, 0.40);
+}
+
+:root[data-theme="cristal"] .popup-menu select option {
+  background: #f3f7ff;
+  color: #162033;
+}
+
+:root[data-theme="cristal-dark"] .popup-menu select option {
+  background: #0b1020;
+  color: #eaf2ff;
+}
+/* =========================================================
+   CRISTAL THEMES — HIGHLIGHT MAIS VISÍVEL (PRESETS / FORMAS)
+   Somente em Cristal e Cristal Escuro
+   ========================================================= */
+
+/* Preset selecionado: anel mais forte + brilho + leve preenchimento */
+:root[data-theme^="cristal"] .preset-slot.selected{
+  position: relative;
+  border-color: rgba(0, 180, 255, 0.92) !important;
+  box-shadow:
+    0 0 0 3px rgba(0, 180, 255, 0.40),
+    0 0 26px rgba(0, 180, 255, 0.22),
+    0 10px 22px rgba(0,0,0,0.18),
+    0 1px 0 rgba(255,255,255,0.40) inset !important;
+  background:
+    linear-gradient(135deg,
+      rgba(0, 180, 255, 0.14),
+      rgba(255, 255, 255, 0.10)) !important;
+}
+
+/* “Pílula” lateral para leitura imediata (indicador de seleção) */
+:root[data-theme^="cristal"] .preset-slot.selected::before{
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  bottom: 4px;
+  width: 5px;
+  border-radius: 999px;
+  background: linear-gradient(180deg,
+    rgba(0, 220, 255, 0.95),
+    rgba(47, 128, 255, 0.95));
+  box-shadow: 0 0 18px rgba(0, 200, 255, 0.45);
+  opacity: 0.95;
+}
+
+/* Forma ativa: mais contraste e preenchimento sutil */
+:root[data-theme^="cristal"] .shape-option.active{
+  border-color: rgba(0, 210, 255, 0.92) !important;
+  background:
+    linear-gradient(135deg,
+      rgba(0, 210, 255, 0.16),
+      rgba(255, 255, 255, 0.10)) !important;
+  box-shadow:
+    0 0 0 3px rgba(0, 210, 255, 0.38),
+    0 0 24px rgba(0, 210, 255, 0.20),
+    0 10px 20px rgba(0,0,0,0.22),
+    0 1px 0 rgba(255,255,255,0.28) inset !important;
+  transform: translateY(-1px);
+}
+
+/* Mantém legibilidade do ícone dentro da forma ativa (especialmente no Cristal claro) */
+:root[data-theme^="cristal"] .shape-option.active .shape-icon{
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+}
+
+/* =========================
+   CRISTAL: preset keyboard flash (glass sheen)
+   - Only animation changes
+   - Does NOT alter theme palette or canvas
+   ========================= */
+:root[data-theme^="cristal"] .preset-slot{
+  position: relative;
+  overflow: hidden; /* needed for sheen sweep */
+}
+
+/* Override the default yellow ring flash with a glassy pulse + sheen */
+:root[data-theme^="cristal"] .preset-slot.flash{
+  animation: cristalPresetPulse 0.32s ease-out;
+}
+
+/* Sheen sweep */
+:root[data-theme^="cristal"] .preset-slot.flash::after{
+  content: "";
+  position: absolute;
+  top: -25%;
+  bottom: -25%;
+  left: -60%;
+  width: 55%;
+  pointer-events: none;
+  border-radius: inherit;
+
+  /* glass highlight */
+  background: linear-gradient(110deg,
+    rgba(255,255,255,0.00) 0%,
+    rgba(255,255,255,0.55) 40%,
+    rgba(255,255,255,0.05) 70%,
+    rgba(255,255,255,0.00) 100%);
+  filter: blur(0.2px);
+  transform: translateX(-120%) skewX(-20deg);
+  opacity: 0;
+
+  animation: cristalPresetSheen 0.46s ease-out;
+}
+
+/* Subtle edge glow during the pulse (uses existing crystal accents) */
+:root[data-theme="cristal"] .preset-slot.flash{
+  box-shadow:
+    0 0 0 1px rgba(140,170,210,0.30),
+    0 10px 24px rgba(30,60,120,0.10);
+}
+
+:root[data-theme="cristal-dark"] .preset-slot.flash{
+  box-shadow:
+    0 0 0 1px rgba(140,180,255,0.22),
+    0 12px 28px rgba(0,0,0,0.40);
+}
+
+/* Keyframes */
+@keyframes cristalPresetPulse{
+  0%   { transform: translateY(0) scale(1); }
+  45%  { transform: translateY(-1px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes cristalPresetSheen{
+  0%   { opacity: 0; transform: translateX(-120%) skewX(-20deg); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(240%) skewX(-20deg); }
+}
+
+/* Terminal theme (CRT / neon green) */
+:root[data-theme="terminal"] {
+  --bg:
+    radial-gradient(1500px circle at 50% 50%, rgba(0, 255, 140, 0.20), transparent 70%),
+    linear-gradient(180deg, #020603 0%, #000000 100%);
+
+  --text: #caffc7;
+  --muted: #78d68a;
+
+  --toolbar-bg: rgba(0, 0, 0, 0.76);
+  --toolbar-border: rgba(120, 255, 170, 0.22);
+
+  --panel-bg: rgba(0, 0, 0, 0.74);
+  --panel-border: rgba(120, 255, 170, 0.18);
+
+  --control-bg: rgba(0, 255, 140, 0.08);
+  --control-bg-hover: rgba(0, 255, 140, 0.14);
+  --control-border: rgba(120, 255, 170, 0.22);
+  --control-text: #d7ffd7;
+
+  /* Canvas: CRT scanlines + vignette + glow */
+  --canvas-bg:
+    repeating-linear-gradient(180deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 1px,
+      rgba(0,0,0,0.00) 2px,
+      rgba(0,0,0,0.00) 4px),
+    radial-gradient(900px circle at 50% 45%, rgba(0, 255, 140, 0.10), transparent 62%),
+    radial-gradient(1200px circle at 50% 50%, rgba(0,0,0,0.00) 55%, rgba(0,0,0,0.60) 100%),
+    linear-gradient(180deg, #010503 0%, #000000 100%);
+
+  --divider: rgba(120, 255, 170, 0.12);
+
+  --tooltip-bg: rgba(0, 0, 0, 0.92);
+  --tooltip-text: #caffc7;
+
+  --preset-slot-bg: rgba(0, 0, 0, 0.58);
+  --preset-slot-border: rgba(120, 255, 170, 0.18);
+  --preset-btn-bg: rgba(0, 255, 140, 0.06);
+  --preset-btn-border: rgba(120, 255, 170, 0.22);
+
+  --modal-bg: rgba(0, 0, 0, 0.80);
+  --modal-text: #caffc7;
+
+  --shadow: 0 10px 28px rgba(0,0,0,0.65);
+  --shadow-strong: 0 16px 52px rgba(0,0,0,0.75);
+}
+
+/* Terminal: brilho e tipografia de console nos controles */
+:root[data-theme="terminal"] .toolbar,
+:root[data-theme="terminal"] .popup-menu,
+:root[data-theme="terminal"] .modal-content {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+:root[data-theme="terminal"] .toolbar button,
+:root[data-theme="terminal"] .toolbar select,
+:root[data-theme="terminal"] .toolbar input,
+:root[data-theme="terminal"] .preset-btn,
+:root[data-theme="terminal"] .shape-option {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  text-shadow: 0 0 10px rgba(0, 255, 140, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(120, 255, 170, 0.14),
+    0 10px 18px rgba(0,0,0,0.55);
+}
+
+:root[data-theme="terminal"] .toolbar button:hover,
+:root[data-theme="terminal"] .toolbar select:hover,
+:root[data-theme="terminal"] .toolbar input:hover,
+:root[data-theme="terminal"] .preset-btn:hover,
+:root[data-theme="terminal"] .shape-option:hover {
+  box-shadow:
+    0 0 0 1px rgba(120, 255, 170, 0.26),
+    0 0 18px rgba(0, 255, 140, 0.16),
+    0 12px 22px rgba(0,0,0,0.60);
+}
+
+
+/* Scanlines bem sutis (opcional, só visual) */
+:root[data-theme="terminal"] #canvas{
+  background-image: linear-gradient(rgba(255,255,255,0.135) 1px, transparent 1px);
+  background-size: 100% 3px;
+  background-blend-mode: overlay;
+}
+
+
+/* =========================
+   Tema: Aurora (cores NOVAS)
+   ========================= */
+:root[data-theme="aurora"] {
+  color-scheme: dark;
+
+  /* Base: “Desert Neon” (âmbar/cobre + framboesa), sem azul/ciano/verde */
+  --bg: #120806;
+  --text: #fff3ea;
+
+  --toolbar-bg: rgba(24, 10, 8, 0.78);
+  --toolbar-border: rgba(255, 190, 140, 0.18);
+
+  --control-bg: rgba(255, 190, 140, 0.10);
+  --control-bg-hover: rgba(255, 190, 140, 0.16);
+  --control-border: rgba(255, 190, 140, 0.22);
+  --control-text: #fff3ea;
+
+  --panel-bg: rgba(28, 11, 10, 0.68);
+  --panel-border: rgba(255, 190, 140, 0.16);
+
+  --divider: rgba(255, 190, 140, 0.12);
+  --muted: rgba(255, 243, 234, 0.70);
+
+  --tooltip-bg: rgba(14, 6, 5, 0.92);
+  --tooltip-text: #fff3ea;
+
+  --preset-slot-bg: rgba(10, 5, 4, 0.72);
+  --preset-slot-border: rgba(255, 190, 140, 0.14);
+  --preset-btn-bg: rgba(255, 190, 140, 0.10);
+/* Canvas: Aurora sem círculos (somente linhas/faixas) */
+--canvas-bg:
+  /* base escura */
+  linear-gradient(180deg, #1a0b09 0%, #0b0504 100%),
+
+  /* “ribbons” diagonais âmbar (sem radial) */
+  repeating-linear-gradient(
+    115deg,
+    rgba(255, 168, 76, 0.00) 0px,
+    rgba(255, 168, 76, 0.14) 14px,
+    rgba(255, 168, 76, 0.00) 46px,
+    rgba(255, 168, 76, 0.10) 74px,
+    rgba(255, 168, 76, 0.00) 110px
+  ),
+
+  /* “ribbons” diagonais framboesa (contrapostas) */
+  repeating-linear-gradient(
+    245deg,
+    rgba(255, 66, 120, 0.00) 0px,
+    rgba(255, 66, 120, 0.12) 18px,
+    rgba(255, 66, 120, 0.00) 52px,
+    rgba(255, 66, 120, 0.09) 82px,
+    rgba(255, 66, 120, 0.00) 124px
+  ),
+
+  /* textura “digital” (scan lines) */
+  repeating-linear-gradient(
+    0deg,
+    rgba(255, 243, 234, 0.040) 0px,
+    rgba(255, 243, 234, 0.040) 1px,
+    transparent 8px,
+    transparent 12px
+  );
+
+  /* Acentos do Aurora (novos) */
+  --accent: #ffa84c;   /* âmbar */
+  --accent-2: #ff4278; /* framboesa */
+
+  --danger: #ff4d6d;
+  --warning: #ffcc66;
+}
+
+/* Glow moderno (somente Aurora) — ajustado para os novos acentos */
+:root[data-theme="aurora"] .toolbar button:hover,
+:root[data-theme="aurora"] .toolbar select:hover,
+:root[data-theme="aurora"] .toolbar input:hover {
+  box-shadow:
+    0 0 0 1px rgba(255,190,140,0.18),
+    0 10px 26px rgba(0,0,0,0.35);
+}
+
+:root[data-theme="aurora"] .toolbar button:focus,
+:root[data-theme="aurora"] .toolbar select:focus,
+:root[data-theme="aurora"] .toolbar input:focus {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(255,168,76,0.32),
+    0 0 0 5px rgba(255,66,120,0.18),
+    0 12px 30px rgba(0,0,0,0.42);
+}
+
+/* Dropdown do Aurora (somente cor, para ficar coerente com a nova paleta) */
+:root[data-theme="aurora"] .popup-menu select option {
+  background-color: #140707;
+  color: #fff3ea;
+}
+
+/* =========================================================
+   PATCH (Terminal): Dropdown legível + indicador verde
+   - SOMENTE no tema "terminal"
+   - Mantém o efeito flash (mesma duração), apenas cor verde
+   - Não altera outros temas
+   ========================================================= */
+
+/* Dropdown de Configurações: força contraste apenas no Terminal */
+:root[data-theme="terminal"] #settingsBox select#themeSelect{
+  background: rgba(0,0,0,0.78);
+  color: var(--text);
+  border: 1px solid rgba(120, 255, 170, 0.28);
+}
+
+:root[data-theme="terminal"] #settingsBox select#themeSelect option{
+  background-color: #021009;
+  color: var(--text);
+}
+
+/* Indicador (preset selecionado + forma ativa): dourado -> verde (como a fonte) */
+:root[data-theme="terminal"] .preset-slot.selected{
+  border-color: var(--text);
+  box-shadow: 0 0 0 1px var(--text);
+}
+
+:root[data-theme="terminal"] .shape-option.active{
+  border-color: var(--text);
+  box-shadow: 0 0 0 1px var(--text);
+}
+
+/* Flash: mantém o mesmo "feel" (0.35s), só muda a cor para verde no Terminal */
+:root[data-theme="terminal"] .preset-slot.flash{
+  animation: presetFlashTerminal 0.35s ease-out;
+}
+
+@keyframes presetFlashTerminal{
+  0%   { box-shadow: 0 0 0 0 rgba(202,255,199,0); }
+  50%  { box-shadow: 0 0 0 3px rgba(202,255,199,0.90); }
+  100% { box-shadow: 0 0 0 0 rgba(202,255,199,0); }
+}
+
+
+/* Painel de edição da imagem de fundo (sem escurecer / sem bloquear o canvas) */
+#bgAdjustModal {
+  /* mantém o mecanismo de "modal" (hidden/show), mas sem backdrop */
+  background: transparent;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 72px 16px 16px 16px; /* abaixo da toolbar */
+  pointer-events: none;          /* não bloqueia cliques/drag no canvas */
+}
+
+#bgAdjustModal .modal-content {
+  pointer-events: auto;          /* permite interação apenas no painel */
+  width: 380px;
+  max-width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 100px);
+  overflow: auto;
+}
+
+/* Em telas menores, encaixa melhor */
+@media (max-width: 640px) {
+  #bgAdjustModal {
+    justify-content: center;
+    padding-top: 84px;
+  }
+  #bgAdjustModal .modal-content {
+    width: calc(100vw - 32px);
+  }
 }
