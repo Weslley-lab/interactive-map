@@ -827,20 +827,7 @@ input[type="range"].range-center::-moz-range-thumb {
 }
 
 /* “Pílula” lateral para leitura imediata (indicador de seleção) */
-:root[data-theme^="cristal"] .preset-slot.selected::before{
-  content: "";
-  position: absolute;
-  left: 3px;
-  top: 4px;
-  bottom: 4px;
-  width: 5px;
-  border-radius: 999px;
-  background: linear-gradient(180deg,
-    rgba(0, 220, 255, 0.95),
-    rgba(47, 128, 255, 0.95));
-  box-shadow: 0 0 18px rgba(0, 200, 255, 0.45);
-  opacity: 0.95;
-}
+
 
 /* Forma ativa: mais contraste e preenchimento sutil */
 :root[data-theme^="cristal"] .shape-option.active{
